@@ -62,7 +62,7 @@ func main() {
 }
 
 func MDFilesFromGit(dir string) {
-	cmd := exec.Command("git", "-C", dir, "-c", "core.quotepath=false", "ls-files", "-o", "-d", "-c", "-m")
+	cmd := exec.Command("git", "-C", dir, "-c", "core.quotepath=false", "status", "--porcelain")
 	var out bytes.Buffer
 	cmd.Stdout = &out
 
@@ -75,7 +75,7 @@ func MDFilesFromGit(dir string) {
 
 	for _, f := range s {
 		if emd.Match([]byte(f)) && !ex.Match([]byte(f)) {
-			md = append(md, f)
+			md = append(md, dir+"/"+strings.Trim(f[3:], "\""))
 		}
 	}
 	wg.Done()
