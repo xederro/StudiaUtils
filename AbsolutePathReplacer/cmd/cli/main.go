@@ -75,6 +75,9 @@ func MDFilesFromGit(dir string) {
 
 	for _, f := range s {
 		if emd.Match([]byte(f)) && !ex.Match([]byte(f)) {
+			if f[0] == 'D' {
+				continue
+			}
 			md = append(md, dir+"/"+strings.Trim(f[3:], "\""))
 		}
 	}
